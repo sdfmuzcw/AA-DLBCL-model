@@ -1,0 +1,176 @@
+##################Data
+mSet1<-Read.TextData(mDATA, dl1$local_path, "col", "disc")
+mSet2<-Read.TextData(clinicalDATA, dl1$local_path, "col", "disc")
+mSet=mSet1
+####combin clinicalDATA
+####mSet=cbind(mSet1,mSet2)
+
+
+##################permutation test Data
+sapply(1:1000,function(I){
+length=dim(mSet)[2]
+a=sample(mSet[1,], length)
+mSet=rbind(a,mSet[-1,])
+                                     }
+
+
+
+##############Normalization
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-FilterVariable(mSet, "iqr", "F", 25)
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "MedianNorm", "LogNorm", "NULL", ratio=FALSE, ratioNum=20)
+
+#########PCA
+mSet<-InitDataObjects("conc", "stat", FALSE)
+mSet<-Read.TextData(mSet, "Replacing_with_your_file_path", "rowu", "disc");
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "NULL", "NULL", "NULL", ratio=FALSE, ratioNum=20)
+mSet<-PlotNormSummary(mSet, "norm_0_", "png", 72, width=NA)
+mSet<-PlotSampleNormSummary(mSet, "snorm_0_", "png", 72, width=NA)
+mSet<-PCA.Anal(mSet)
+mSet<-PlotPCAPairSummary(mSet, "pca_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCAScree(mSet, "pca_scree_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCA2DScore(mSet, "pca_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPCALoading(mSet, "pca_loading_0_", "png", 72, width=NA, 1,2);
+mSet<-PlotPCABiplot(mSet, "pca_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-PlotPCA3DLoading(mSet, "pca_loading3d_0_", "json", 1,2,3)
+
+################PLSDA
+mSet<-InitDataObjects("conc", "stat", FALSE)
+mSet<-Read.TextData(mSet, "Replacing_with_your_file_path", "rowu", "disc");
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "NULL", "NULL", "NULL", ratio=FALSE, ratioNum=20)
+mSet<-PlotNormSummary(mSet, "norm_0_", "png", 72, width=NA)
+mSet<-PlotSampleNormSummary(mSet, "snorm_0_", "png", 72, width=NA)
+mSet<-PCA.Anal(mSet)
+mSet<-PlotPCAPairSummary(mSet, "pca_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCAScree(mSet, "pca_scree_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCA2DScore(mSet, "pca_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPCALoading(mSet, "pca_loading_0_", "png", 72, width=NA, 1,2);
+mSet<-PlotPCABiplot(mSet, "pca_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-PlotPCA3DLoading(mSet, "pca_loading3d_0_", "json", 1,2,3)
+mSet<-PLSR.Anal(mSet, reg=TRUE)
+mSet<-PlotPLSPairSummary(mSet, "pls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPLS2DScore(mSet, "pls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPLS3DScoreImg(mSet, "pls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotPLSLoading(mSet, "pls_loading_0_", "png", 72, width=NA, 1, 2);
+mSet<-PlotPLS3DLoading(mSet, "pls_loading3d_0_", "json", 1,2,3)
+mSet<-PlotPLS.Imp(mSet, "pls_imp_0_", "png", 72, width=NA, "vip", "Comp. 1", 15,FALSE)
+mSet<-PlotPLSBiplot(mSet, "pls_biplot_0_", "png", 72, width=NA, 1,2,10)
+
+#############sPLSDA
+mSet<-InitDataObjects("conc", "stat", FALSE)
+mSet<-Read.TextData(mSet, "Replacing_with_your_file_path", "rowu", "disc");
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "NULL", "NULL", "NULL", ratio=FALSE, ratioNum=20)
+mSet<-PlotNormSummary(mSet, "norm_0_", "png", 72, width=NA)
+mSet<-PlotSampleNormSummary(mSet, "snorm_0_", "png", 72, width=NA)
+mSet<-PCA.Anal(mSet)
+mSet<-PlotPCAPairSummary(mSet, "pca_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCAScree(mSet, "pca_scree_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCA2DScore(mSet, "pca_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPCALoading(mSet, "pca_loading_0_", "png", 72, width=NA, 1,2);
+mSet<-PlotPCABiplot(mSet, "pca_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-PlotPCA3DLoading(mSet, "pca_loading3d_0_", "json", 1,2,3)
+mSet<-PLSR.Anal(mSet, reg=TRUE)
+mSet<-PlotPLSPairSummary(mSet, "pls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPLS2DScore(mSet, "pls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPLS3DScoreImg(mSet, "pls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotPLSLoading(mSet, "pls_loading_0_", "png", 72, width=NA, 1, 2);
+mSet<-PlotPLS3DLoading(mSet, "pls_loading3d_0_", "json", 1,2,3)
+mSet<-PlotPLS.Imp(mSet, "pls_imp_0_", "png", 72, width=NA, "vip", "Comp. 1", 15,FALSE)
+mSet<-PlotPLSBiplot(mSet, "pls_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-SPLSR.Anal(mSet, 5, 10, "same", "Mfold", 5, F)
+mSet<-PlotSPLSPairSummary(mSet, "spls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotSPLS2DScore(mSet, "spls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0,"na")
+mSet<-PlotSPLS3DScoreImg(mSet, "spls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotSPLSLoading(mSet, "spls_loading_0_", "png", 72, width=NA, 1,"overview");
+mSet<-PlotSPLS3DLoading(mSet, "spls_loading3d_0_", "json", 1,2,3)
+
+#############################heatmap
+mSet<-InitDataObjects("conc", "stat", FALSE)
+mSet<-Read.TextData(mSet, "Replacing_with_your_file_path", "rowu", "disc");
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "NULL", "NULL", "NULL", ratio=FALSE, ratioNum=20)
+mSet<-PlotNormSummary(mSet, "norm_0_", "png", 72, width=NA)
+mSet<-PlotSampleNormSummary(mSet, "snorm_0_", "png", 72, width=NA)
+mSet<-PCA.Anal(mSet)
+mSet<-PlotPCAPairSummary(mSet, "pca_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCAScree(mSet, "pca_scree_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCA2DScore(mSet, "pca_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPCALoading(mSet, "pca_loading_0_", "png", 72, width=NA, 1,2);
+mSet<-PlotPCABiplot(mSet, "pca_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-PlotPCA3DLoading(mSet, "pca_loading3d_0_", "json", 1,2,3)
+mSet<-PLSR.Anal(mSet, reg=TRUE)
+mSet<-PlotPLSPairSummary(mSet, "pls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPLS2DScore(mSet, "pls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPLS3DScoreImg(mSet, "pls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotPLSLoading(mSet, "pls_loading_0_", "png", 72, width=NA, 1, 2);
+mSet<-PlotPLS3DLoading(mSet, "pls_loading3d_0_", "json", 1,2,3)
+mSet<-PlotPLS.Imp(mSet, "pls_imp_0_", "png", 72, width=NA, "vip", "Comp. 1", 15,FALSE)
+mSet<-PlotPLSBiplot(mSet, "pls_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-SPLSR.Anal(mSet, 5, 10, "same", "Mfold", 5, F)
+mSet<-PlotSPLSPairSummary(mSet, "spls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotSPLS2DScore(mSet, "spls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0,"na")
+mSet<-PlotSPLS3DScoreImg(mSet, "spls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotSPLSLoading(mSet, "spls_loading_0_", "png", 72, width=NA, 1,"overview");
+mSet<-PlotSPLS3DLoading(mSet, "spls_loading3d_0_", "json", 1,2,3)
+
+########################kmeans
+mSet<-InitDataObjects("conc", "stat", FALSE)
+mSet<-Read.TextData(mSet, "Replacing_with_your_file_path", "rowu", "disc");
+mSet<-SanityCheckData(mSet)
+mSet<-ReplaceMin(mSet);
+mSet<-PreparePrenormData(mSet)
+mSet<-Normalization(mSet, "NULL", "NULL", "NULL", ratio=FALSE, ratioNum=20)
+mSet<-PlotNormSummary(mSet, "norm_0_", "png", 72, width=NA)
+mSet<-PlotSampleNormSummary(mSet, "snorm_0_", "png", 72, width=NA)
+mSet<-PCA.Anal(mSet)
+mSet<-PlotPCAPairSummary(mSet, "pca_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCAScree(mSet, "pca_scree_0_", "png", 72, width=NA, 5)
+mSet<-PlotPCA2DScore(mSet, "pca_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPCALoading(mSet, "pca_loading_0_", "png", 72, width=NA, 1,2);
+mSet<-PlotPCABiplot(mSet, "pca_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-PlotPCA3DLoading(mSet, "pca_loading3d_0_", "json", 1,2,3)
+mSet<-PLSR.Anal(mSet, reg=TRUE)
+mSet<-PlotPLSPairSummary(mSet, "pls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotPLS2DScore(mSet, "pls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0, "na")
+mSet<-PlotPLS3DScoreImg(mSet, "pls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotPLSLoading(mSet, "pls_loading_0_", "png", 72, width=NA, 1, 2);
+mSet<-PlotPLS3DLoading(mSet, "pls_loading3d_0_", "json", 1,2,3)
+mSet<-PlotPLS.Imp(mSet, "pls_imp_0_", "png", 72, width=NA, "vip", "Comp. 1", 15,FALSE)
+mSet<-PlotPLSBiplot(mSet, "pls_biplot_0_", "png", 72, width=NA, 1,2,10)
+mSet<-SPLSR.Anal(mSet, 5, 10, "same", "Mfold", 5, F)
+mSet<-PlotSPLSPairSummary(mSet, "spls_pair_0_", "png", 72, width=NA, 5)
+mSet<-PlotSPLS2DScore(mSet, "spls_score2d_0_", "png", 72, width=NA, 1,2,0.95,0,0,"na")
+mSet<-PlotSPLS3DScoreImg(mSet, "spls_score3d_0_", "png", 72, width=NA, 1,2,3, 40)
+mSet<-PlotSPLSLoading(mSet, "spls_loading_0_", "png", 72, width=NA, 1,"overview");
+mSet<-PlotSPLS3DLoading(mSet, "spls_loading3d_0_", "json", 1,2,3)
+mSet<-Kmeans.Anal(mSet, 3)
+mSet<-PlotKmeans(mSet, "km_0_", "png", 72, width=NA, "default", "F")
+mSet<-PlotClustPCA(mSet, "km_pca_0_", "png", 72, width=NA, "default", "km", "F")
+
+##################Enrichment Analysis
+library(MetaboAnalystR)
+tmp.vec <- c("Acetoacetic acid", "Beta-Alanine", "Creatine", "Dimethylglycine", "Fumaric acid", "Glycine", "Homocysteine", "L-Cysteine", "L-Isolucine", "L-Phenylalanine", "L-Serine", "L-Threonine", "L-Tyrosine", "L-Valine", "Phenylpyruvic acid", "Propionic acid", "Pyruvic acid", "Sarcosine", "Arsenic", "Benzene", "Caffeic acid", "Cotinine", "Cadmium", "Lead", "Thiocyanate")
+mSet<-InitDataObjects("conc", "msetora", FALSE)
+mSet<-Setup.MapData(mSet, tmp.vec);
+mSet<-CrossReferencing(mSet, "name");
+mSet<-CreateMappingResultTable(mSet)
+mSet<-PerformDetailMatch(mSet, "L-Isolucine");
+mSet <- GetCandidateList(mSet);
+mSet<-SetCandidate(mSet, "L-Isolucine", "L-Isoleucine");
+mSet<-SetMetabolomeFilter(mSet, F);
+mSet<-SetCurrentMsetLib(mSet, "smpdb_pathway", 0);
+mSet<-CalculateHyperScore(mSet)
+mSet<-PlotORA(mSet, "ora_0_", "bar", "png", 72, width=NA)
